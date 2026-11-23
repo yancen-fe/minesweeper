@@ -1,0 +1,54 @@
+[
+  {
+    "reason": "unknown kind",
+    "code": "MS1.AgAAACgAAABBAAYCGAAEkAQQAABeVUBVAVUFVBVQBUAVAAAAAAAAAAA.fa79feaa"
+  },
+  {
+    "reason": "unknown difficulty",
+    "code": "MS1.AQMAACgAAABBAAYCGAAEkAQQAABeVUBVAVUFVBVQBUAVAAAAAAAAAAA.338cf980"
+  },
+  {
+    "reason": "unknown mode",
+    "code": "MS1.AQACACgAAABBAAYCGAAEkAQQAABeVUBVAVUFVBVQBUAVAAAAAAAAAAA.84225e5a"
+  },
+  {
+    "reason": "first index out of range",
+    "code": "MS1.AQAA__8AAABBAAYCGAAEkAQQAABeVUBVAVUFVBVQBUAVAAAAAAAAAAA.09b9ba21"
+  },
+  {
+    "reason": "incorrect mine count",
+    "code": "MS1.AQAAACgAAABBAQYCGAAEkAQQAABeVUBVAVUFVBVQBUAVAAAAAAAAAAA.e8ea4ca2"
+  },
+  {
+    "reason": "nonzero mine padding",
+    "code": "MS1.AQAAACgAAABBAAYCGAAEkAQQAIBeVUBVAVUFVBVQBUAVAAAAAAAAAAA.56dd08c7"
+  },
+  {
+    "reason": "nonzero progress padding",
+    "code": "MS1.AQAAACgAAABBAAYCGAAEkAQQAABeVUBVAVUFVBVQBUAVAAAAAAAAAIA.f488ca28"
+  },
+  {
+    "reason": "opened mine",
+    "code": "MS1.AQAAACgAAABBAAYCGAAEkAQQAABeVURVAVUFVBVQBUAVAAAAAAAAAAA.f05844ea"
+  },
+  {
+    "reason": "unsafe first move with correct mine count",
+    "code": "MS1.AQAAACgAAABBAAQCGAAFkAQQAABeVUBVAVUFVBVQBUAVAAAAAAAAAAA.6a7383eb"
+  },
+  {
+    "reason": "first move is closed",
+    "code": "MS1.AQAAACgAAABBAAYCGAAEkAQQAABeVUBVAVUFVBVQBEAVAAAAAAAAAAA.d8be96c8"
+  },
+  {
+    "reason": "unproved logical claim",
+    "code": "MS1.AQABACgAAABBAAYCGAAEkAQQAABeVUBVAVUFVBVQBUAVAAAAAAAAAAA.57b942a1"
+  },
+  {
+    "reason": "truncated body with correct checksum",
+    "code": "MS1.AQAAACgAAABBAAYCGAAEkAQQAABeVUBVAVUFVBVQBUAVAAAAAAAAAA.531509b0"
+  },
+  {
+    "reason": "challenge with nonzero elapsed time",
+    "code": "MS1.AAAAACgAAABBAAYCGAAEkAQQAAA.955aa75e"
+  }
+]

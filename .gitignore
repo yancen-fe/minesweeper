@@ -1,0 +1,15 @@
+.DS_Store
+native/.build/
+dist/
+
+.secrets/
+desktop/node_modules/
+desktop/dist/
+desktop/src-tauri/target/
+release/artifacts/
+native/Vendor/
+
+.build/
+
+web/dist/
+web/node_modules/

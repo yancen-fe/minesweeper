@@ -1,0 +1,1 @@
+{"main":{"identifier":"main","description":"","local":true,"windows":["main","game-*"],"permissions":["core:default","core:window:allow-destroy","core:window:allow-set-size","core:window:allow-set-min-size","core:window:allow-set-max-size","clipboard-manager:allow-write-text"]}}

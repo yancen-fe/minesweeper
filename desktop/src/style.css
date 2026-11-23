@@ -1,0 +1,188 @@
+:root {
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 13px;
+  color: #222;
+  background: #bfbfbf;
+  color-scheme: light;
+  --paper: #bfbfbf;
+  --blue: #1600ad;
+  --raised: #fff #808080 #808080 #fff;
+  --sunken: #808080 #fff #fff #808080;
+}
+* { box-sizing: border-box }
+html, body, #app { margin: 0; width: 100%; height: 100%; overflow: hidden }
+body { -webkit-user-select: none; user-select: none }
+input, textarea, [contenteditable]:not([contenteditable="false"]), .game-id {
+  -webkit-user-select: text; user-select: text;
+}
+button, select { font: inherit; color: inherit }
+button {
+  border: 2px solid; border-color: var(--raised); border-radius: 3px;
+  background: var(--paper); box-shadow: inset 1px 1px #e5e5e5, inset -1px -1px #aaa;
+  min-height: 29px; padding: 3px 9px; cursor: pointer; white-space: nowrap; font-weight: 600;
+}
+button:active, button[aria-pressed=true] {
+  border-color: var(--sunken); background: #b5b5b5; box-shadow: inset 1px 1px #999;
+}
+button:disabled { color: #777; cursor: default }
+:focus, :focus-visible { outline: none }
+main {
+  height: 100%; display: flex; flex-direction: column; gap: 10px; padding: 10px;
+  border: 2px solid; border-color: #fff #888 #888 #fff;
+  box-shadow: inset 1px 1px #dedede, inset -1px -1px #a0a0a0;
+}
+header { display: flex; gap: 6px; align-items: center; flex-shrink: 0 }
+nav { display: flex; gap: 3px }
+.spacer { flex: 1 }
+#level-select { min-width: 84px; width: 84px; font-size: 14px }
+.bevel-in { border: 2px solid; border-color: var(--sunken); border-radius: 3px }
+.instruments { position: relative; padding: 5px; display: flex; align-items: center; gap: 6px; height: 52px; flex-shrink: 0 }
+.instruments output {
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  background: #000; border: 2px solid; border-color: var(--sunken); border-radius: 2px;
+  width: 64px; height: 38px; padding: 1px 2px;
+}
+.instruments output svg { display: block; width: 100%; height: 100% }
+.instruments output:last-child { margin-left: auto }
+#timer[data-digits="4"] { width: 82px }
+#timer[data-digits="5"] { width: 100px }
+#restart { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); height: 38px; width: 38px; padding: 3px; margin: 0 }
+#restart svg { width: 28px; height: 28px; display: block }
+.board-area { flex: 1; min-height: 0; min-width: 0 }
+.board-wrap { width: 100%; height: 100%; display: flex; position: relative; padding: 0; border-radius: 0 }
+canvas { touch-action: none; flex-shrink: 0 }
+#pause-mask { position: absolute; inset: 0; display: grid; place-items: center; background: #0003 }
+.pause-card { display: flex; flex-direction: column; gap: 14px; align-items: center; padding: 22px }
+#modal { position: fixed; inset: 0; background: #0003; display: grid; place-items: center; padding: 12px; z-index: 10 }
+.modal-card {
+  width: min(100%, 300px); max-height: 100%; min-height: 0;
+  display: flex; flex-direction: column; gap: 12px; overflow: hidden;
+}
+.modal-card, .confirm, .pause-card {
+  position: relative; border: 3px solid; border-color: #fff #777 #777 #fff;
+  border-radius: 3px; background: var(--paper);
+  box-shadow: inset 1px 1px #dedede, inset -1px -1px #999, 2px 2px #0003, 6px 8px 14px #0003;
+}
+.modal-card, .confirm { padding: 11px }
+.dialog-heading {
+  display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
+  height: 28px; margin: -9px -9px 0; padding: 3px 4px; gap: 6px;
+  background: var(--blue); color: #fff;
+}
+.dialog-heading h2 { font-size: 14px; line-height: 20px; font-weight: 700; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.dialog-heading button {
+  color: #222; font-size: 18px; font-weight: 700; line-height: 16px;
+  min-width: 22px; width: 22px; min-height: 22px; height: 22px; padding: 0; flex-shrink: 0; border-radius: 2px;
+}
+.dialog-heading button:active { padding: 1px 0 0 1px }
+.dialog-heading button:disabled { color: #777 }
+.modal-card.settings { width: min(100%, 340px); height: min(352px, 100%) }
+.settings-tabs { gap: 0; flex-shrink: 0 }
+.settings-tabs button { flex: 1; min-height: 26px; padding: 2px 8px }
+.settings-list, .records { overflow: auto }
+.settings-list { display: flex; flex-direction: column; gap: 9px; min-height: 0 }
+.setting-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 27px; flex-shrink: 0 }
+.icon-row { display: flex; align-items: center; gap: 8px; min-height: 45px; flex-shrink: 0 }
+.icon-row button { padding: 3px 7px }
+.icon-preview { width: 34px; height: 34px; display: grid; place-items: center; flex-shrink: 0 }
+.icon-preview img { max-width: 100%; max-height: 100%; object-fit: contain }
+.icon-preview span { font-size: 30px; line-height: 1 }
+.board-icon-preview { width: 26px; height: 26px }
+.icon-preview[data-kind="flag"] img, .icon-preview[data-kind="mine"] img { max-width: 26px; max-height: 26px }
+.muted { color: #555 }
+.icon-message { color: #a00; font-size: 11px; margin: 0 }
+.icon-message:empty { display: none }
+.modal-card.result { width: min(100%, 320px); gap: 12px }
+.result .metrics>div { min-width: 0; padding: 8px }
+.result .metrics b { font-size: 20px }
+.result .result-time { font: 800 32px/1.2 Nunito, sans-serif; text-align: center; margin-top: 5px }
+.result .muted { text-align: center; margin: 0 }
+.modal-card footer { display: flex; justify-content: center; gap: 10px; margin-top: 8px; flex-shrink: 0 }
+.confirm-layer { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; padding: 10px; background: #0003 }
+.confirm { width: min(280px, 100%) }
+.confirm p { margin: 16px 0; font-size: 12px }
+.confirm footer { justify-content: flex-end; margin-top: 14px }
+/* Window-level popups keep options outside the clipped dialog body. */
+.classic-combo { display: flex; align-items: center; justify-content: space-between; gap: 8px; text-align: left; min-width: 124px; min-height: 27px; height: 27px; padding: 2px 6px; font-size: 12px }
+.combo-value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.combo-arrow { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; flex-shrink: 0 }
+.classic-options, #top-menu { background: var(--paper); border: 2px solid; border-color: var(--raised); box-shadow: inset 1px 1px #dedede, inset -1px -1px #999, 2px 2px #0003; border-radius: 2px; padding: 2px }
+.classic-options { position: fixed; z-index: 1000; outline: 0; max-height: calc(100vh - 16px); overflow: auto; font-size: 12px }
+.classic-options [role=option] { height: 28px; padding: 4px 5px; display: flex; align-items: center; gap: 6px; white-space: nowrap; cursor: default; color: #222 }
+.classic-options [role=option].highlighted { background: var(--blue); color: white }
+.combo-check { display: inline-block; width: 14px; flex-shrink: 0; font-weight: 700 }
+.menu-wrap { position: relative }
+#menu-toggle { min-width: 30px; letter-spacing: 1px; font-weight: 700 }
+#top-menu { position: absolute; right: 0; top: calc(100% + 5px); width: 142px; z-index: 5 }
+#top-menu button { width: 100%; height: 28px; min-height: 28px; text-align: left; border: 0; box-shadow: none; background: transparent; padding: 4px 10px; font-size: 12px; font-weight: 400 }
+#top-menu button:hover, #top-menu button:focus-visible { background: var(--blue); color: white; outline: 0 }
+#top-menu hr { border: 0; border-top: 1px solid #808080; border-bottom: 1px solid #fff; margin: 3px 4px }
+/* History: raised statistics above a recessed, scrolling record list. */
+.modal-card.history { width: min(100%, 440px); height: min(550px, 100%); gap: 12px }
+.history-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0; font-size: 12px }
+#history-filter { width: 124px }
+.metrics { display: flex; gap: 8px; flex-shrink: 0 }
+.metrics>div { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; padding: 8px 10px; border: 2px solid; border-color: var(--raised); box-shadow: inset 1px 1px #dedede, inset -1px -1px #aaa }
+.metrics span { color: #505050; font-size: 11px }
+.metrics b { font: 800 22px/1.2 Nunito, sans-serif; font-variant-numeric: tabular-nums }
+.records { flex: 1; min-height: 0; background: var(--paper); border: 2px solid; border-color: var(--sunken); overscroll-behavior: contain }
+.records article { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(62px, auto); align-items: center; gap: 12px; padding: 10px 12px; border-bottom: 1px solid #a4a4a4 }
+.records article:last-child { border-bottom: 0 }
+.record-meta { display: flex; flex-direction: column; gap: 4px; min-width: 0 }
+.record-level { font-weight: 700; font-size: 12px }
+.records article time { font-size: 10px; color: #555 }
+.record-result { padding: 3px 6px; font-size: 11px; white-space: nowrap; background: #adadad; color: #444 }
+.record-result.won { background: #b4ceb2; color: #24532a }
+.record-result.lost { background: #d5b3ad; color: #793229 }
+.records article strong { font: 800 20px/1.2 Nunito, monospace; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; margin: 0 }
+.records article small { font: 11px "Microsoft YaHei", sans-serif; color: #555 }
+.empty { text-align: center; color: #555; height: 100%; min-height: 90px; display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 16px }
+.empty strong { font-size: 13px; font-weight: 400; color: #444 }
+.empty span { font-size: 11px }
+.history .history-footer { justify-content: space-between; align-items: center; margin: 0; gap: 8px }
+.history-footer>span { font-size: 11px; color: #555 }
+[hidden] { display: none !important }
+@media(max-width: 380px) {
+  main { padding: 8px; gap: 8px }
+  header { gap: 4px }
+  button { padding: 3px 6px }
+  .records article { gap: 8px; padding: 9px 8px }
+  .metrics>div { padding: 8px }
+}
+
+#mode-select { min-width: 104px; width: 104px }
+.history-toolbar { gap: 8px }.history-toolbar>span { display: none }.history-toolbar .classic-combo { min-width: 0; width: 50% }
+.records article strong { font-size: 15px }.result .result-time { font-size: 28px }
+
+/* Portable challenge and progress codes use the existing classic dialog surface. */
+.modal-card.share, .modal-card.import { width: min(100%, 360px) }
+.modal-card.share p, .modal-card.import p { margin: 0; line-height: 1.6 }
+.game-id { font: 12px ui-monospace, monospace; overflow-wrap: anywhere }
+.modal-card textarea { width: 100%; height: 76px; flex-shrink: 0; resize: none; padding: 7px; background: #d4d4d4; color: #222; font: 11px/1.5 ui-monospace, monospace; border: 2px solid; border-color: var(--sunken); border-radius: 0 }
+.modal-card textarea:focus { outline: none }
+#import-preview { display: flex; flex-direction: column; gap: 8px; min-height: 0 }
+
+/* Classic, unobtrusive scrollbars for lists, menus and sharing text. */
+.settings-list, .records, .classic-options, .modal-card textarea {
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+  overscroll-behavior: contain;
+}
+.settings-list, .records { scrollbar-gutter: stable }
+::-webkit-scrollbar { width: 12px; height: 12px }
+::-webkit-scrollbar-track { background: #c9c9c9; box-shadow: inset 1px 0 #a8a8a8 }
+::-webkit-scrollbar-thumb {
+  background: #bfbfbf; border: 1px solid; border-color: #fff #7a7a7a #7a7a7a #fff;
+  border-radius: 0; min-height: 28px; min-width: 28px;
+}
+::-webkit-scrollbar-thumb:hover { background: #b1b1b1 }
+::-webkit-scrollbar-thumb:active { background: #a8a8a8; border-color: #7a7a7a #e7e7e7 #e7e7e7 #7a7a7a }
+::-webkit-scrollbar-corner { background: var(--paper) }
+::-webkit-scrollbar-button { display: none; width: 0; height: 0 }
+
+/* Keep all history filters usable in the narrow fixed game window. */
+.history-toolbar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px }
+.history-toolbar .classic-combo, .history-toolbar #history-filter, .history-toolbar #reset-filters { width: 100%; min-width: 0 }
+.history .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px }
+.history .metrics>div { flex-direction: row; align-items: baseline; justify-content: space-between; padding: 6px 8px }
+.history .metrics b { font-size: 17px; white-space: nowrap }

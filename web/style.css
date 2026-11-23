@@ -1,0 +1,26 @@
+html.browser-game { min-height: 100%; height: auto; overflow: auto; background: #a7a7a7 }
+.browser-game body { min-height: 100vh; height: auto; overflow: visible; background: linear-gradient(145deg, #d1d1d1, #aaa); padding: 24px 12px }
+.web-shell { width: min(100%, var(--game-width, 430px)); margin: 0 auto; transition: width 240ms ease }
+.web-shell h1 { margin: 0; padding: 6px 12px; border: 2px solid; border-color: #fff #777 #777 #fff; background: var(--blue); color: #fff; font-size: 15px; line-height: 22px; text-align: center; letter-spacing: 2px }
+.browser-game #app { width: 100%; height: var(--game-height, 550px); overflow: visible; box-shadow: 3px 4px #0002, 10px 14px 30px #0003; transition: height 240ms ease }
+.browser-game main { padding: 10px; gap: 10px }
+.browser-game .board-area { overflow: auto hidden }
+.browser-game #modal { height: 100dvh }
+.web-shell > footer { text-align: center; padding: 20px 0 0; color: #363636; line-height: 1.6 }
+.web-shell > footer p { margin: 10px 0 0 }
+.web-shell > footer small { font-size: 12px }
+#storage-status { max-width: 340px; margin: 10px auto; color: #7b160c }
+@media (max-width: 420px) {
+  .browser-game body { padding: 10px 6px }
+  .browser-game main { padding: 6px; gap: 6px }
+  .browser-game header { gap: 3px }
+  .browser-game header button { padding-inline: 5px }
+  .browser-game #level-select { min-width: 65px; width: 65px }
+  .browser-game #mode-select { min-width: 90px; width: 90px }
+  .browser-game #app { height: min(var(--game-height, 550px), 70svh); min-height: 360px }
+}
+@media (prefers-reduced-motion: reduce) {
+  .web-shell, .browser-game #app { transition: none }
+}
+
+.browser-game canvas { touch-action: auto }

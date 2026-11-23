@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="zh-CN" class="browser-game">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#bfbfbf">
+  <meta name="description" content="经典扫雷，支持无猜玩法、分享挑战与本地战绩，无需登录">
+  <link rel="icon" href="../desktop/src-tauri/icons/icon.png">
+  <title>扫雷</title>
+</head>
+<body>
+  <div class="web-shell"><h1>扫雷</h1><div id="app"></div><footer><button id="mark-mode" aria-pressed="false">插旗模式</button><p>战绩与设置仅保存在当前浏览器</p><small>电脑右键插旗 · 手机开启插旗模式</small><p id="storage-status" role="status" hidden></p></footer></div>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "yancen-minesweeper-web",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "description": "经典扫雷网页版本，数据只存本地",
+  "scripts": {
+    "start": "node scripts/run.mjs dev",
+    "dev": "node scripts/run.mjs dev",
+    "build": "node scripts/run.mjs build",
+    "preview": "node scripts/run.mjs preview",
+    "test": "npm --prefix ../desktop test"
+  }
+}

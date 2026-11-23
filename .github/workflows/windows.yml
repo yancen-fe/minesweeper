@@ -1,0 +1,76 @@
+name: Windows installer
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    tags: ['minesweeper-v*']
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+      - name: Generate version metadata from the release tag
+        if: github.ref_type == 'tag'
+        run: node scripts/write-update-tag.mjs
+      - name: Install Rust
+        run: rustup update stable
+      - run: npm ci --prefix desktop
+      - run: npm test --prefix desktop
+      - name: Build Windows installer
+        working-directory: desktop
+        run: npm run tauri -- build --bundles nsis
+      - name: Verify custom icon storage and image validation
+        working-directory: desktop/src-tauri
+        run: cargo test --release --locked
+      - name: Verify Windows installation and launch
+        shell: pwsh
+        run: |
+          $installer = Get-ChildItem desktop/src-tauri/target/release/bundle/nsis/*.exe | Select-Object -First 1
+          $install = Join-Path $env:RUNNER_TEMP 'MinesweeperInstallTest'
+          # Install the previous formal version first, then upgrade to the new release.
+          $previous = Join-Path $env:RUNNER_TEMP 'minesweeper-1.1.0.exe'
+          Invoke-WebRequest 'https://apps.yancen.top/minesweeper/releases/minesweeper-1.1.0-windows-x64.exe' -OutFile $previous
+          if ((Get-FileHash $previous -Algorithm SHA256).Hash.ToLower() -ne 'd7f871ad4bffb76867ed51e60e5133d8528628fe3a4247d35f9b626814a65b07') { throw 'Previous installer checksum mismatch' }
+          $old = Start-Process -FilePath $previous -ArgumentList @('/S', "/D=$install") -Wait -PassThru
+          if ($old.ExitCode -ne 0) { throw "Previous installer failed: $($old.ExitCode)" }
+          $sentinels = @($env:APPDATA, $env:LOCALAPPDATA) | ForEach-Object {
+            $data = Join-Path $_ 'com.yancen.minesweeper.windows'
+            New-Item -ItemType Directory -Force -Path $data | Out-Null
+            $sentinel = Join-Path $data 'release-migration-test.txt'
+            Set-Content $sentinel 'preserve-existing-data'
+            $sentinel
+          }
+          $process = Start-Process -FilePath $installer.FullName -ArgumentList @('/S', "/D=$install") -Wait -PassThru
+          foreach ($sentinel in $sentinels) {
+            if ((Get-Content $sentinel -Raw).Trim() -ne 'preserve-existing-data') { throw 'Existing app data was removed during migration' }
+          }
+          if ($process.ExitCode -ne 0) { throw "Installer failed: $($process.ExitCode)" }
+          $exe = Get-ChildItem $install -Recurse -Filter '*.exe' | Where-Object { $_.Name -in @('yancen-minesweeper.exe', '扫雷.exe') } | Select-Object -First 1
+          if (-not $exe) { throw 'Installed application executable not found' }
+          $expectedVersion = (Get-Content desktop/src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
+          if ($exe.VersionInfo.ProductVersion -notmatch ('^' + [regex]::Escape($expectedVersion) + '(?:\.|$)')) { throw "Wrong installed version: $($exe.VersionInfo.ProductVersion)" }
+          $app = Start-Process -FilePath $exe.FullName -PassThru
+          Start-Sleep -Seconds 8
+          $app.Refresh()
+          if ($app.HasExited) { throw "Application exited early: $($app.ExitCode)" }
+          if (-not $app.CloseMainWindow()) { Stop-Process -Id $app.Id; throw 'Window close request could not be sent' }
+          if (-not $app.WaitForExit(10000)) { Stop-Process -Id $app.Id; throw 'Application did not exit after closing its main window' }
+          Write-Output 'Windows formal release upgrade, data preservation, installed version, launch and close checks passed'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: minesweeper-windows-x64
+          path: desktop/src-tauri/target/release/bundle/nsis/*.exe
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: github.ref_type == 'tag'
+        with:
+          name: minesweeper-update-tag
+          path: release/artifacts/update-tag.json
+          if-no-files-found: error
